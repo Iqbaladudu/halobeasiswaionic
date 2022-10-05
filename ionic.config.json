@@ -1,0 +1,7 @@
+{
+  "name": "halobeasiswaionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
