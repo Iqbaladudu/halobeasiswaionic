@@ -1,8 +1,21 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
+@font-face {
+  font-family: "sourceSansProBold";
+  src: url("./SourceSansPro-Bold.ttf");
+}
 /** Ionic CSS Variables **/
 :root {
+    --sourcesans: "sourceSansProBold";
+    
+    
+    
+      /** additional color  **/
+      --primary: #FF8A6A;
+      --secondary: #26373E;
+      --variants: #F5F5F5;
+      --yellow: #F9F871;
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
