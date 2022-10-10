@@ -13,7 +13,7 @@ module.exports = {
       },
       fontFamily: {
         'primary': ['sourceSansProBold', 'sans-serif'],
-      }
+      },
     },
   },
   variants: {
