@@ -26,7 +26,9 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import OnboardingIndex from "./pages/Onboarding/OnboardingIndex";
 import { Route } from "react-router";
-import Home from "./pages/Onboarding/Menu/Home";
+import Home from "./pages/Menu/Home";
+import StudyAbroad from "./pages/StudyAbroad/StudyAbroad";
+import StudyAbroadMenuDetail from "./pages/StudyAbroad/StudyAbroadMenuDetail/StudyAbroadMenuDetail";
 
 setupIonicReact();
 
@@ -36,6 +38,11 @@ const App: React.FC = () => (
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path="/menu" component={Home} />
+          <Route path="/studyAbroad" component={StudyAbroad} />
+          <Route
+            path="/studyAbroadMenuDetail"
+            component={StudyAbroadMenuDetail}
+          />
           <OnboardingIndex />
         </IonRouterOutlet>
       </IonReactRouter>

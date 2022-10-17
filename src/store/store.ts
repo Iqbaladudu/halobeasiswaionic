@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { ClickedSlice } from './Clicked';
 import { CountryNameListSlice } from './CountryList';
 import { PositionSlice } from './positionSlice';
 
 export const store = configureStore({
     reducer: {
         positions: PositionSlice.reducer,
-        countryList: CountryNameListSlice.reducer
+        countryList: CountryNameListSlice.reducer,
+        ClickedSlice: ClickedSlice.reducer
     }
 });
 
