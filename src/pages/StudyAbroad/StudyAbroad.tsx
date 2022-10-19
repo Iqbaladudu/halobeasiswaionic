@@ -23,7 +23,7 @@ export const StudyAbroadHeader: React.FC<Props> = ({ backUrl }) => {
         <IonButton
           onClick={() => history.push(backUrl)}
           color="danger"
-          className="font-primary font-bold"
+          className="font-primary font-bold ml-5"
         >
           Kembali
         </IonButton>

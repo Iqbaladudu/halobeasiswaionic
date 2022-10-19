@@ -22,10 +22,12 @@ const CountryListCard: React.FC<Props> = ({ countryName, url, position }) => {
     <div
       onClick={() => handleClick()}
       className={clsx(
-        "w-[100px] h-[55px] bg-variants  rounded-[10px]",
+        "w-[100px] h-[55px] bg-variants rounded-[10px] text-secondary flex justify-center text-[20px] items-center",
         isClicked && clickPos === position && "ring-2 ring-secondary"
       )}
-    ></div>
+    >
+      <p>{countryName}</p>
+    </div>
   );
 };
 

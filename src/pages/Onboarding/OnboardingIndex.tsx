@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../hooks/hooks";
 import Final from "./Final";
+import { ContentTextFour, HeaderTextFour, ImgFour } from "./Four";
 import Onboarding from "./Onboarding";
 import { ContentTextOne, HeaderTextOne, ImgOne } from "./One";
 import { ContentTextThree, HeaderTextThree, ImgThree } from "./Three";
@@ -12,15 +13,17 @@ const OnboardingIndex = () => {
 
   return (
     <>
-      {position < 4 ? (
+      {position < 5 ? (
         <Onboarding
           img={
             position === 1 ? (
               <ImgOne />
             ) : position === 2 ? (
               <ImgTwo />
-            ) : (
+            ) : position === 3 ? (
               <ImgThree />
+            ) : (
+              <ImgFour />
             )
           }
           headerText={
@@ -28,8 +31,10 @@ const OnboardingIndex = () => {
               <HeaderTextOne />
             ) : position === 2 ? (
               <HeaderTextTwo />
-            ) : (
+            ) : position === 3 ? (
               <HeaderTextThree />
+            ) : (
+              <HeaderTextFour />
             )
           }
           contentText={
@@ -37,11 +42,14 @@ const OnboardingIndex = () => {
               <ContentTextOne />
             ) : position === 2 ? (
               <ContentTextTwo />
-            ) : (
+            ) : position === 3 ? (
               <ContentTextThree />
+            ) : (
+              <ContentTextFour />
             )
           }
-          long={position === 3 && true}
+          long={position >= 3 && true}
+          submit={position >= 3 && true}
         />
       ) : (
         <Final />

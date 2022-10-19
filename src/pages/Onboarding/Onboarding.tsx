@@ -12,6 +12,7 @@ interface Props {
   headerText?: ReactNode | ReactNode[];
   contentText?: ReactNode | ReactNode[];
   long?: boolean;
+  submit?: boolean;
 }
 
 const Onboarding: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const Onboarding: React.FC<Props> = ({
   headerText,
   contentText,
   long,
+  submit,
 }) => {
   const dispatch: AppDispatch = useDispatch();
 
@@ -36,18 +38,19 @@ const Onboarding: React.FC<Props> = ({
 
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent>
         {img}
         <div
           className={clsx(
             "bg-primary w-[100%] absolute bottom-0 rounded-t-[50px] flex justify-center items-center gap-5 flex-col",
-            long ? "h-[85%]" : "h-[45%]"
+            long ? "h-[70%]" : "h-[45%]"
           )}
         >
           <div className="flex gap-2 absolute top-6">
             <Dot long={position === 1 ? true : false} />
             <Dot long={position === 2 ? true : false} />
             <Dot long={position === 3 ? true : false} />
+            <Dot long={position === 4 ? true : false} />
           </div>
           {headerText}
           {contentText}
@@ -69,6 +72,7 @@ const Onboarding: React.FC<Props> = ({
             <IonButton
               className="h-auto"
               fill="clear"
+              type={submit ? "submit" : "button"}
               onClick={() => NextPos()}
             >
               <IonImg src={require("../../assets/img/right.png")} />

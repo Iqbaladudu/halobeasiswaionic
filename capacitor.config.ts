@@ -4,7 +4,12 @@ const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'halobeasiswaionic',
   webDir: 'build',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  plugins: {
+    "keyboard": {
+      resizeOnFullScreen: true,
+    }
+  }
 };
 
 export default config;
