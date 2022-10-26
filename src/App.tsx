@@ -29,6 +29,7 @@ import { Route } from "react-router";
 import Home from "./pages/Menu/Home";
 import StudyAbroad from "./pages/StudyAbroad/StudyAbroad";
 import StudyAbroadMenuDetail from "./pages/StudyAbroad/StudyAbroadMenuDetail/StudyAbroadMenuDetail";
+import LiveChat from "./pages/LiveChat/LiveChat";
 
 setupIonicReact();
 
@@ -43,6 +44,7 @@ const App: React.FC = () => (
             path="/studyAbroadMenuDetail"
             component={StudyAbroadMenuDetail}
           />
+          <Route path="/liveChat" component={LiveChat} />
           <OnboardingIndex />
         </IonRouterOutlet>
       </IonReactRouter>

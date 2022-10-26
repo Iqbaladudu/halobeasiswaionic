@@ -1,15 +1,9 @@
-import {
-  IonImg,
-  IonInput,
-  IonItem,
-  IonItemDivider,
-  IonList,
-  IonSelect,
-  IonSelectOption,
-} from "@ionic/react";
+import { IonImg, IonInput, IonSelect, IonSelectOption } from "@ionic/react";
 import useSWR from "swr";
 import axios, { AxiosResponse } from "axios";
 import "./Three.css";
+import { AppDispatch } from "../../store/store";
+import { useDispatch } from "react-redux";
 
 interface Country {
   name: string;
@@ -34,57 +28,54 @@ export const HeaderTextFour = () => {
 };
 
 export const ContentTextFour = () => {
+  // const dispatch: AppDispatch = useDispatch();
+
   const { data } = useSWR(
     "https://restcountries.com/v2/all?fields=name",
     fetcher
   );
 
   return (
-    <IonList lines="none" mode="ios">
-      <IonItem>
+    <div className="flex flex-col gap-[20px] justify-center items-center">
+      <div>
         <IonInput
           autoCapitalize="words"
           autocomplete="name"
           inputMode="text"
           maxlength={30}
-          mode="ios"
           name="fullname"
           required
           placeholder="Nama Lengkap"
-          className="text-gray-500 font-bold"
+          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
         ></IonInput>
-      </IonItem>
-      <IonItemDivider></IonItemDivider>
-      <IonItem>
+      </div>
+      <div className="">
         <IonSelect
           placeholder="Gender"
-          className="text-gray-500 font-bold"
-          mode="ios"
+          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center  font-bold text-gray-500"
           name="gender"
+          mode="ios"
         >
           <IonSelectOption value="male">Laki-laki</IonSelectOption>
           <IonSelectOption value="female">Perempuan</IonSelectOption>
         </IonSelect>
-      </IonItem>
-      <IonItemDivider></IonItemDivider>
-      <IonItem>
+      </div>
+      <div>
         <IonInput
           inputMode="numeric"
           type="number"
           maxlength={2}
-          mode="ios"
           name="age"
           required
           placeholder="Umur"
-          className="text-gray-500 font-bold"
+          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
         ></IonInput>
-      </IonItem>
-      <IonItemDivider></IonItemDivider>
-      <IonItem>
+      </div>
+      <div>
         <IonSelect
-          placeholder="Negara Tujuan Kuliah"
-          className="text-gray-500 font-bold"
           mode="ios"
+          placeholder="Negara Tujuan Kuliah"
+          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center  font-bold text-gray-500"
           name="gender"
         >
           {data?.map(({ name }, id) => (
@@ -93,8 +84,17 @@ export const ContentTextFour = () => {
             </IonSelectOption>
           ))}
         </IonSelect>
-      </IonItem>
-      <IonItemDivider></IonItemDivider>
-    </IonList>
+      </div>
+      <div>
+        <IonInput
+          type="tel"
+          inputMode="tel"
+          maxlength={13}
+          required
+          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
+          placeholder="Nomor Telepon: 628xxxx"
+        ></IonInput>
+      </div>
+    </div>
   );
 };

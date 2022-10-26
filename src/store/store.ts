@@ -1,13 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
+import ChatContent from './ChatContent';
 import { ClickedSlice } from './Clicked';
 import { CountryNameListSlice } from './CountryList';
 import { PositionSlice } from './positionSlice';
+import RegisterFormSlice from './RegisterForm';
 
 export const store = configureStore({
     reducer: {
         positions: PositionSlice.reducer,
         countryList: CountryNameListSlice.reducer,
-        ClickedSlice: ClickedSlice.reducer
+        ClickedSlice: ClickedSlice.reducer,
+        chat: ChatContent.reducer,
+        register: RegisterFormSlice.reducer
     }
 });
 

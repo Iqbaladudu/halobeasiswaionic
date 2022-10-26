@@ -54,6 +54,7 @@ const Home = () => {
             <IonButton
               color="none"
               className="w-[40%] h-[125px] bg-variants rounded-[10px] flex justify-center items-center shadow-md"
+              onClick={() => history.push("/liveChat")}
             >
               <div className="flex flex-col items-center gap-1">
                 <IonImg

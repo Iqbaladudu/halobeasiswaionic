@@ -50,6 +50,7 @@ const OnboardingIndex = () => {
           }
           long={position >= 3 && true}
           submit={position >= 3 && true}
+          register={position === 3 && true}
         />
       ) : (
         <Final />

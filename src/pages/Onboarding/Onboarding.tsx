@@ -1,11 +1,25 @@
-import { IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
-import { ReactNode } from "react";
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonPage,
+  IonProgressBar,
+  IonToast,
+} from "@ionic/react";
+import { ReactNode, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Dot from "../../components/Dot/Dot";
 import { useAppSelector } from "../../hooks/hooks";
 import { decrement, increment } from "../../store/positionSlice";
 import { AppDispatch } from "../../store/store";
 import { clsx } from "clsx";
+import { book, caretBackCircle, caretForwardCircle } from "ionicons/icons";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase.config";
+import { toggleClick } from "../../store/RegisterForm";
+
+import "./Onboarding.css";
+import writeUserData from "../../Service/writeUserData";
 
 interface Props {
   img?: ReactNode;
@@ -13,6 +27,7 @@ interface Props {
   contentText?: ReactNode | ReactNode[];
   long?: boolean;
   submit?: boolean;
+  register?: boolean;
 }
 
 const Onboarding: React.FC<Props> = ({
@@ -21,12 +36,61 @@ const Onboarding: React.FC<Props> = ({
   contentText,
   long,
   submit,
+  register,
 }) => {
   const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [isButtonDisabledThree, setIsButtonDisabledThree] =
+    useState<boolean>(false);
+  const [isButtonDisabledFour, setIsButtonDisabledFour] =
+    useState<boolean>(false);
 
   const { position } = useAppSelector(({ positions }) => {
     return positions;
   });
+
+  const {
+    username,
+    email,
+    password,
+    fullName,
+    phoneNumber,
+    gender,
+    umur,
+    countryWantToStudy,
+  } = useAppSelector(({ register }) => {
+    return register;
+  });
+
+  // Validasi input null step 3
+  const stepThreeValidation = () => {
+    if (position === 3 && !username && !email && !password) {
+      setIsButtonDisabledThree(true);
+    } else {
+      setIsButtonDisabledThree(false);
+    }
+  };
+
+  const stepFourValidation = () => {
+    if (
+      position === 4 &&
+      !fullName &&
+      !phoneNumber &&
+      !gender &&
+      !umur &&
+      !countryWantToStudy
+    ) {
+      setIsButtonDisabledFour(true);
+    } else {
+      setIsButtonDisabledFour(false);
+    }
+  };
+
+  useEffect(() => stepThreeValidation());
+  useEffect(() => stepFourValidation());
 
   const NextPos = () => {
     dispatch(increment());
@@ -36,9 +100,56 @@ const Onboarding: React.FC<Props> = ({
     dispatch(decrement());
   };
 
+  const doRegister = async () => {
+    await setLoading(true);
+    await dispatch(toggleClick(true));
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        writeUserData({
+          userId: userCredential.user.uid,
+          username: username,
+          email: email,
+        });
+        setShowToast(true);
+        NextPos();
+      })
+      .catch((error) => {
+        setShowToast(true);
+        setError(true);
+        setErrorMessage(error.message);
+        console.log(error.message);
+        NextPos();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <IonPage>
       <IonContent>
+        {loading && <IonProgressBar type="indeterminate" />}
+        {error ? (
+          <IonToast
+            isOpen={showToast}
+            onDidDismiss={() => setShowToast(false)}
+            position="top"
+            duration={1500}
+            header="ERROR"
+            color="danger"
+            message={errorMessage}
+          />
+        ) : (
+          <IonToast
+            isOpen={showToast}
+            onDidDismiss={() => setShowToast(false)}
+            position="middle"
+            duration={1500}
+            header="BERHASIL"
+            color="light"
+            message="Kamu berhasil mendaftar"
+          />
+        )}
         {img}
         <div
           className={clsx(
@@ -66,16 +177,23 @@ const Onboarding: React.FC<Props> = ({
                 fill="clear"
                 onClick={() => PrevPos()}
               >
-                <IonImg src={require("../../assets/img/left.png")} />
+                <IonIcon icon={caretBackCircle} size="large" class="icon" />
               </IonButton>
             )}
             <IonButton
               className="h-auto"
               fill="clear"
+              disabled={
+                isButtonDisabledThree === true
+                  ? true
+                  : isButtonDisabledFour === true
+                  ? true
+                  : false
+              }
               type={submit ? "submit" : "button"}
-              onClick={() => NextPos()}
+              onClick={() => (register ? doRegister() : NextPos())}
             >
-              <IonImg src={require("../../assets/img/right.png")} />
+              <IonIcon icon={caretForwardCircle} size="large" class="icon" />
             </IonButton>
           </div>
         </div>
