@@ -10,7 +10,7 @@ export interface RegisterForm {
     toggle?: boolean,
     username: string,
     fullName: string,
-    phoneNumber: number,
+    phoneNumber: string,
     gender: string
     umur: number,
     countryWantToStudy: string,
@@ -23,7 +23,7 @@ const initialState: RegisterForm = {
     toggle: false,
     username: '',
     fullName: '',
-    phoneNumber: 0,
+    phoneNumber: '',
     gender: '',
     umur: 0,
     countryWantToStudy: '',
@@ -33,7 +33,7 @@ export const RegisterFormSlice = createSlice({
     name: REGISTER_TYPE,
     initialState,
     reducers: {
-        userId: (state, action: PayloadAction<string>) => {
+        setId: (state, action: PayloadAction<string>) => {
             state.userId = action.payload
         },
         email: (state, action: PayloadAction<string>) => {
@@ -51,7 +51,7 @@ export const RegisterFormSlice = createSlice({
         fullName: (state, action: PayloadAction<string>) => {
             state.fullName = action.payload
         },
-        phoneNumber: (state, action: PayloadAction<number>) => {
+        phoneNumber: (state, action: PayloadAction<string>) => {
             state.phoneNumber = action.payload
         },
         gender: (state, action: PayloadAction<string>) => {
@@ -66,6 +66,6 @@ export const RegisterFormSlice = createSlice({
     }
 })
 
-export const { email, password, toggleClick, username, fullName, phoneNumber, gender, umur, countryWantToStudy } = RegisterFormSlice.actions;
+export const { setId, email, password, toggleClick, username, fullName, phoneNumber, gender, umur, countryWantToStudy } = RegisterFormSlice.actions;
 export const regiserFormSlice = (state: RootState) => state.chat;
 export default RegisterFormSlice;

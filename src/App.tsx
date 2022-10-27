@@ -33,6 +33,8 @@ import LiveChat from "./pages/LiveChat/LiveChat";
 
 setupIonicReact();
 
+const init = false;
+
 const App: React.FC = () => (
   <Provider store={store}>
     <IonApp>
@@ -45,7 +47,7 @@ const App: React.FC = () => (
             component={StudyAbroadMenuDetail}
           />
           <Route path="/liveChat" component={LiveChat} />
-          <OnboardingIndex />
+          {init ? <OnboardingIndex /> : <Home />}
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

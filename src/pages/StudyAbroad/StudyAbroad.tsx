@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { RootState } from "../../store/store";
 import CountryListCard from "./CountryListCard";
+import "./StudyAbroad.css";
 
 interface Props {
   backUrl: string;
@@ -57,7 +58,7 @@ const StudyAbroad = () => {
       <StudyAbroadHeader backUrl="/menu" />
       <IonContent fullscreen className="font-primary text-2xl">
         <div className="flex flex-col justify-between h-[90%]">
-          <div className="w-[100%] flex flex-col justify-center items-center gap-5 mt-6">
+          <div className="w-[100%] flex flex-col justify-center items-center gap-5 mt-[70px]">
             <p className="text-secondary">Pilih Negara Tujuan Kamu:</p>
             <div className="flex flex-wrap justify-between w-[70%] gap-5 rounded-sm">
               {countryData.map(({ countryName, url, position }) => (

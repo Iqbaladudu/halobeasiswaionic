@@ -1,6 +1,6 @@
 import { IonImg, IonInput } from "@ionic/react";
 import { useDispatch } from "react-redux";
-import { email, password, username } from "../../store/RegisterForm";
+import { email, fullName, password, username } from "../../store/RegisterForm";
 import { AppDispatch } from "../../store/store";
 import "./Three.css";
 
@@ -23,6 +23,19 @@ export const ContentTextThree = () => {
 
   return (
     <div className="flex flex-col gap-[20px] justify-center items-center">
+      <div>
+        <IonInput
+          autoCapitalize="words"
+          autocomplete="name"
+          inputMode="text"
+          maxlength={30}
+          name="fullname"
+          required
+          placeholder="Nama Lengkap"
+          className="bg-white h-[50px] rounded-md px-2 flex justify-center font-bold text-gray-500"
+          onIonChange={(e) => dispatch(fullName(e.target.value as string))}
+        ></IonInput>
+      </div>
       <div className="">
         <IonInput
           inputMode="text"

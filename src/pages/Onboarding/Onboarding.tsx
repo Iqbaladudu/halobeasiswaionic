@@ -13,10 +13,10 @@ import { useAppSelector } from "../../hooks/hooks";
 import { decrement, increment } from "../../store/positionSlice";
 import { AppDispatch } from "../../store/store";
 import { clsx } from "clsx";
-import { book, caretBackCircle, caretForwardCircle } from "ionicons/icons";
+import { caretBackCircle, caretForwardCircle } from "ionicons/icons";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.config";
-import { toggleClick } from "../../store/RegisterForm";
+import { setId, toggleClick } from "../../store/RegisterForm";
 
 import "./Onboarding.css";
 import writeUserData from "../../Service/writeUserData";
@@ -28,6 +28,7 @@ interface Props {
   long?: boolean;
   submit?: boolean;
   register?: boolean;
+  writeData?: boolean;
 }
 
 const Onboarding: React.FC<Props> = ({
@@ -37,22 +38,21 @@ const Onboarding: React.FC<Props> = ({
   long,
   submit,
   register,
+  writeData,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
-  const [isButtonDisabledThree, setIsButtonDisabledThree] =
-    useState<boolean>(false);
-  const [isButtonDisabledFour, setIsButtonDisabledFour] =
-    useState<boolean>(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   const { position } = useAppSelector(({ positions }) => {
     return positions;
   });
 
   const {
+    userId,
     username,
     email,
     password,
@@ -66,31 +66,25 @@ const Onboarding: React.FC<Props> = ({
   });
 
   // Validasi input null step 3
-  const stepThreeValidation = () => {
-    if (position === 3 && !username && !email && !password) {
-      setIsButtonDisabledThree(true);
-    } else {
-      setIsButtonDisabledThree(false);
-    }
-  };
 
-  const stepFourValidation = () => {
-    if (
-      position === 4 &&
-      !fullName &&
-      !phoneNumber &&
-      !gender &&
-      !umur &&
-      !countryWantToStudy
-    ) {
-      setIsButtonDisabledFour(true);
-    } else {
-      setIsButtonDisabledFour(false);
+  useEffect(() => {
+    if (position === 3) {
+      setIsButtonDisabled(true);
+      if (username && password && fullName) {
+        setIsButtonDisabled(false);
+      }
     }
-  };
+  }, [position, username, password, fullName]);
 
-  useEffect(() => stepThreeValidation());
-  useEffect(() => stepFourValidation());
+  useEffect(() => {
+    if (position === 4) {
+      setIsButtonDisabled(true);
+      if (phoneNumber && gender && umur && countryWantToStudy) {
+        setIsButtonDisabled(false);
+        return;
+      }
+    }
+  }, [position, phoneNumber, gender, umur, countryWantToStudy]);
 
   const NextPos = () => {
     dispatch(increment());
@@ -105,11 +99,7 @@ const Onboarding: React.FC<Props> = ({
     await dispatch(toggleClick(true));
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        writeUserData({
-          userId: userCredential.user.uid,
-          username: username,
-          email: email,
-        });
+        dispatch(setId(userCredential.user.uid));
         setShowToast(true);
         NextPos();
       })
@@ -123,6 +113,22 @@ const Onboarding: React.FC<Props> = ({
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const addData = async () => {
+    await setLoading(true);
+    await writeUserData({
+      userId,
+      username,
+      fullName,
+      email,
+      phoneNumber,
+      gender,
+      umur,
+      countryWantToStudy,
+    });
+    await setLoading(false);
+    NextPos();
   };
 
   return (
@@ -143,10 +149,10 @@ const Onboarding: React.FC<Props> = ({
           <IonToast
             isOpen={showToast}
             onDidDismiss={() => setShowToast(false)}
-            position="middle"
+            position="top"
             duration={1500}
             header="BERHASIL"
-            color="light"
+            color="success"
             message="Kamu berhasil mendaftar"
           />
         )}
@@ -154,7 +160,7 @@ const Onboarding: React.FC<Props> = ({
         <div
           className={clsx(
             "bg-primary w-[100%] absolute bottom-0 rounded-t-[50px] flex justify-center items-center gap-5 flex-col",
-            long ? "h-[70%]" : "h-[45%]"
+            long ? "h-[80%]" : "h-[45%]"
           )}
         >
           <div className="flex gap-2 absolute top-6">
@@ -183,15 +189,11 @@ const Onboarding: React.FC<Props> = ({
             <IonButton
               className="h-auto"
               fill="clear"
-              disabled={
-                isButtonDisabledThree === true
-                  ? true
-                  : isButtonDisabledFour === true
-                  ? true
-                  : false
-              }
+              disabled={isButtonDisabled}
               type={submit ? "submit" : "button"}
-              onClick={() => (register ? doRegister() : NextPos())}
+              onClick={() =>
+                register ? doRegister() : writeData ? addData() : NextPos()
+              }
             >
               <IonIcon icon={caretForwardCircle} size="large" class="icon" />
             </IonButton>

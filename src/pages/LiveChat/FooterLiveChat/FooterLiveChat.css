@@ -7,3 +7,7 @@ ion-textarea.custom-textarea {
 ion-icon {
   color: #26373e;
 }
+
+ion-toolbar {
+  --background: white;
+}

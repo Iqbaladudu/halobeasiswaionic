@@ -1,5 +1,13 @@
-import { IonBadge, IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
+import {
+  IonBadge,
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonPage,
+} from "@ionic/react";
 import { useHistory } from "react-router";
+import { chatbubbleEllipses, informationCircle } from "ionicons/icons";
 import "./Home.css";
 
 const Home = () => {
@@ -57,10 +65,7 @@ const Home = () => {
               onClick={() => history.push("/liveChat")}
             >
               <div className="flex flex-col items-center gap-1">
-                <IonImg
-                  src={require("../../assets/img/chatIcon.png")}
-                  className="w-[40px] h-[40px]"
-                />
+                <IonIcon icon={chatbubbleEllipses} size="large" />
                 <p className="font-primary text-secondary text-xl">Chat</p>
               </div>
             </IonButton>
@@ -69,10 +74,7 @@ const Home = () => {
               className="w-[40%] h-[125px] bg-variants rounded-[10px] flex justify-center items-center shadow-md"
             >
               <div className="flex flex-col items-center gap-1">
-                <IonImg
-                  src={require("../../assets/img/aboutUsIcon.png")}
-                  className="w-[47px] h-[40px]"
-                />
+                <IonIcon icon={informationCircle} size="large" />
                 <p className="font-primary text-secondary text-xl">About Us</p>
               </div>
             </IonButton>

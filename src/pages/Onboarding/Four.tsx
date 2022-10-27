@@ -4,9 +4,17 @@ import axios, { AxiosResponse } from "axios";
 import "./Three.css";
 import { AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
+import {
+  countryWantToStudy,
+  gender,
+  phoneNumber,
+  umur,
+} from "../../store/RegisterForm";
+import { useState } from "react";
 
 interface Country {
   name: string;
+  callingCodes: string[];
   independent: boolean;
 }
 
@@ -28,33 +36,23 @@ export const HeaderTextFour = () => {
 };
 
 export const ContentTextFour = () => {
-  // const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const [countryCode, setCountryCode] = useState("");
 
   const { data } = useSWR(
-    "https://restcountries.com/v2/all?fields=name",
+    "https://restcountries.com/v2/all?fields=name,callingCodes",
     fetcher
   );
 
   return (
     <div className="flex flex-col gap-[20px] justify-center items-center">
-      <div>
-        <IonInput
-          autoCapitalize="words"
-          autocomplete="name"
-          inputMode="text"
-          maxlength={30}
-          name="fullname"
-          required
-          placeholder="Nama Lengkap"
-          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
-        ></IonInput>
-      </div>
       <div className="">
         <IonSelect
           placeholder="Gender"
           className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center  font-bold text-gray-500"
           name="gender"
           mode="ios"
+          onIonChange={(e) => dispatch(gender(e.target.value as string))}
         >
           <IonSelectOption value="male">Laki-laki</IonSelectOption>
           <IonSelectOption value="female">Perempuan</IonSelectOption>
@@ -62,13 +60,14 @@ export const ContentTextFour = () => {
       </div>
       <div>
         <IonInput
-          inputMode="numeric"
+          inputMode="decimal"
           type="number"
           maxlength={2}
           name="age"
           required
           placeholder="Umur"
-          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
+          className="bg-white h-[50px] w-[250px] rounded-md flex justify-center text-center font-bold text-gray-500"
+          onIonChange={(e) => dispatch(umur(e.target.value as number))}
         ></IonInput>
       </div>
       <div>
@@ -76,7 +75,10 @@ export const ContentTextFour = () => {
           mode="ios"
           placeholder="Negara Tujuan Kuliah"
           className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center  font-bold text-gray-500"
-          name="gender"
+          name="countryWantToStudy"
+          onIonChange={(e) =>
+            dispatch(countryWantToStudy(e.target.value as string))
+          }
         >
           {data?.map(({ name }, id) => (
             <IonSelectOption key={id} value={name}>
@@ -85,14 +87,30 @@ export const ContentTextFour = () => {
           ))}
         </IonSelect>
       </div>
-      <div>
+      <div className="flex flex-row gap-1">
+        <IonSelect
+          mode="ios"
+          className="bg-white h-[50px] w-[60px] rounded-md px-2 flex justify-center text-center  font-bold text-gray-500"
+          name="countryWantToStudy"
+          onIonChange={(e) => setCountryCode(e.target.value)}
+          placeholder="+"
+        >
+          {data?.map(({ callingCodes }, id) => (
+            <IonSelectOption key={id} value={callingCodes[0]}>
+              {"+" + callingCodes[0]}
+            </IonSelectOption>
+          ))}
+        </IonSelect>
         <IonInput
-          type="tel"
+          type="number"
           inputMode="tel"
-          maxlength={13}
-          required
-          className="bg-white h-[50px] w-[250px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
-          placeholder="Nomor Telepon: 628xxxx"
+          maxlength={11}
+          className="bg-white h-[50px] w-[190px] rounded-md px-2 flex justify-center text-center font-bold text-gray-500"
+          name="countryWantToStudy"
+          placeholder="No Hp/WhatsApp"
+          onIonChange={(e) =>
+            dispatch(phoneNumber((countryCode + e.target.value) as string))
+          }
         ></IonInput>
       </div>
     </div>
